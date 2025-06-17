@@ -2,10 +2,17 @@ import { useQuery } from "@tanstack/react-query"
 import { fetchApi } from "../API/PostAPi"
 
 export const FetchRq = () => {
-    const  {data} = useQuery({
+    const  { data, isLoading, isError, error } = useQuery({
         queryKey: ['Posts'],
         queryFn: fetchApi,
+        // gcTime: 1000,
+        // staleTime: 10000,
+        refetchInterval: 1000,
+        refetchIntervalInBackground: true,
+
     });
+    if (isLoading) return <h1>Loading...</h1>
+    if (isError) return <h1>Error: {error.message}</h1>
     return (
         <>
         <div className="flex justify-center items-center w-[70%] m-auto mt-10">
