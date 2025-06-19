@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { fetchApi } from "../API/PostAPi"
+import { NavLink } from "react-router-dom";
 
 export const FetchRq = () => {
     const  { data, isLoading, isError, error } = useQuery({
@@ -20,10 +21,12 @@ export const FetchRq = () => {
                 {
                     data.map((item) => {
                         return (
-                            <li key={item.id} className="bg-black px-6 py-4 flex flex-col gap-4">
+                           <NavLink to={`/rqDetail/${item.id}`}>
+                              <li key={item.id} className="bg-black px-6 py-4 flex flex-col gap-4">
                                 <p>Title: {item.title}</p>
                                 <p>Body: {item.body}</p>
                             </li>
+                           </NavLink>
                         )
                     })
                 }
