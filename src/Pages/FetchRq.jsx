@@ -1,10 +1,10 @@
 import { keepPreviousData, QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { deletPost, fetchApi } from "../API/PostAPi"
+import { deletPost, fetchApi, updatePost } from "../API/PostAPi"
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 
 export const FetchRq = () => {
-  const QueryClient = useQueryClient();
+  const queryClient = useQueryClient();
     const [ pageNo, setPageNo ] = useState(0)
     const  { data, isLoading, isError, error } = useQuery({
         queryKey: ['Posts', pageNo],
@@ -19,9 +19,19 @@ export const FetchRq = () => {
     const deleteMutaion = useMutation({
         mutationFn: (id) => deletPost(id),
         onSuccess: (data, id) => {
-            QueryClient.setQueryData(["Posts", pageNo], (curritem) => {
+            queryClient.setQueryData(["Posts", pageNo], (curritem) => {
                 return curritem?.filter((item) => item.id !== id)
         })
+        }
+    });
+     const UpdateMutaion = useMutation({
+        mutationFn: (id) => updatePost(id),
+        onSuccess: (apiData, postId) => {
+        queryClient.setQueriesData(["posts", pageNo], (oldPosts) => {
+          return oldPosts?.map((currPost) =>  {
+            return currPost.id === postId ? { ...currPost, title: apiData.data.title } : currPost
+          });
+        });
         }
     });
     if (isLoading) return <h1>Loading...</h1>
@@ -45,6 +55,12 @@ export const FetchRq = () => {
           onClick={() => deleteMutaion.mutate(item.id)}
         >
           Delete
+        </button>
+        <button
+          className="mt-2 bg-green-700 hover:bg-red-600 text-white py-1 px-4 rounded self-end"
+          onClick={() => UpdateMutaion.mutate(item.id)}
+        >
+          Edit 
         </button>
       </li>
     ))

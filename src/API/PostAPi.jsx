@@ -12,6 +12,9 @@ export const fetchDetailPost = async (id) => {
     const res = await api.get(`posts/${id}`);
     return res.status === 200? res.data : []
 }
-export const deletPost = async (id) => {
-    const res = await api.delete(`/posts/${id}`);
+export const deletPost = (id) => {
+    return api.delete(`/posts/${id}`);
+}
+export const updatePost = (id) => {
+    return api.patch(`/posts/${id}`, {title: "I have updated"});
 }
