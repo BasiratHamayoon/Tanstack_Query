@@ -12,3 +12,6 @@ export const fetchDetailPost = async (id) => {
     const res = await api.get(`posts/${id}`);
     return res.status === 200? res.data : []
 }
+export const deletPost = async (id) => {
+    const res = await api.delete(`/posts/${id}`);
+}
