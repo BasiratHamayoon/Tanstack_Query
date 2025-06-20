@@ -6,6 +6,9 @@ export const Header = () => {
         },
         {
             id: 2, title:"FetchRq", url: "/rq"
+        },
+        {
+            id: 3, title: "InfinitScrole", url: '/infinit'
         }
     ]
     return (
